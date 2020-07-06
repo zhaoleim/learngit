@@ -12,3 +12,4 @@ Git is free software distributed under the GPL
 9
 8
 7
+Creating a new branch is quick.
