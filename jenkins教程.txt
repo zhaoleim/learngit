@@ -1,0 +1,120 @@
+
+
+提前安装好java
+
+一、jenkins卸载;
+	
+	1、 rpm -e jenkins
+	
+	2、 检查是否卸载成功 rpm -ql jenkins
+	
+	3、 find / -iname jenkins | xargs -n 1000 rm -rf  删除残留
+	
+==========================================================================
+
+二、jenkins安装
+	
+	* wget -O ：下载并以不同的文件名保存
+	
+	* wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo  yum的repo中默认没有Jenkins，需要先将Jenkins存储库添加到yum repos
+	
+	1、 yum install -y jenkins  默认安装最新的
+	
+	2、 service jenkins start   启动jenkins 
+	
+	jenkins操作: 
+
+	关闭jenkins	  http://localhost:8080/exit  
+	
+	重启jenkins   http://localhost:8080/restart
+	
+	重新加载配置  http://localhost:8080/reload
+	
+三、jenkins配置;
+	
+	1、登录jenkins、选择系统管理----> 插件管理--->添加新的插件
+	
+		* 中文版插件 --- Locale Plugin
+		
+		* Maven插件 --- Maven Integration
+		
+		* 远程服务插件 --- Publish over SSH
+		
+	2、配置工具(JDK、Maven、git)
+	
+	系统管理 ---> 全局工具配置
+		
+		* Maven 配置: 配置 Maven 的setting.xml文件   /usr/local/apache-maven-3.6.3/conf/settings.xml
+		
+		* JDK安装 : 配置JAVA_HOME  /usr/lib/jvm/java
+		
+		* Git配置 : 配置Git的安装路径  /usr/bin/git
+		
+		* Maven安装: 配置Maven的安装路径  /usr/local/apache-maven-3.6.3
+		
+	3、配置服务器地址; 系统管理 ---> 系统配置 ---> Publish over SSH  
+		
+		*
+		
+=======================================================================================
+
+
+四、Pipeline 构建
+	
+	Pipeline的配置方式主要有两种模式: declarative和script
+		
+		script: 在web界面直接编写脚本、不好移植。和1.x的使用方式一样，只是编写脚本的语言不一样。
+		
+		declarative：是编写在一个名为jenkinsfile文件中，可以跟随scm进行版本控制、2.x真正的精髓所在。
+		
+	Pipeline的几个基本概念:
+		
+	Stage：阶段、一个Pipeline可以划分为若干个Stage、每个Stage代表一组操作。注意、Stage是一个逻辑分组的概念、可以跨多个Node。
+	
+	Node: 节点、一个Node就是一个Jenkins节点、或者说是Master、或者Agent、是执行Step的具体运行环境。
+	
+	Step: 步骤、Step是最基本的操作单元、小到创建一个目录，大到构建一个Docker镜像，是由各类Jenkins Plugin提供。
+	
+	使用条件: jenkins 2.x或者更高版本。 Pipeline插件。
+	
+	-----------------------------------------------------------
+	
+	1、pipeline script:
+	
+	示例: 
+	
+		pipeline{
+			agent any
+			stages{
+				stage('Build'){
+					steps {
+						echo "make"
+					}
+				}
+				stage('Test'){
+					steps {
+						echo "make check || true"
+					}
+				}
+				stage('Deploy'){
+					steps {
+						echo "make publish"
+					}
+				}
+			}
+		}
+	
+---------------------------------------------------------------------------------------------------
+	
+	在SCM中定义pipeline
+	在复杂的Pipeline中难以在Pipeline配置页面的文本区域进行写入和维护。Jenkins可以通过从SCM选项的控件中加载Pipeline脚本。
+	选择SCM选项中的Pipeline脚本后、不要在Jenkins UI中输入任何Groovy代码。
+	
+	代码段生成器;
+	
+	
+
+	
+	
+
+ 
