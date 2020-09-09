@@ -1,0 +1,75 @@
+
+
+http://172.27.124.54:8902/config.html?#/appid=tcmp      配置中心
+
+
+
+邮箱密码:
+
+ zhaolei@troila.com 
+
+ZL896591773zl
+
+
+协同办公平台"
+
+19090
+
+ZL896591773zl
+
+
+http://172.27.138.202:8200/center/env
+
+
+834748
+
+571536.0000,263212
+
+confluence
+
+账号 zhaolei  密码 123456
+
+
+git 密码账号:
+
+15222276910@163.com
+
+token 39ab814588a251801e084182dd0dc4d3b386cb65
+
+ZL896591773zl
+
+
+
+ssh-keygen  -t rsa –C “zhaolei@troila.com”
+
+
+
+蓝湖:
+
+zhaolei@troila.com
+
+zl896591773ZL
+
+<update id="updateAlarmMsgTime" parameterType="java.util.List">
+		<foreach collection="list" separator=";" item="bean">
+			update alarm_message_task set
+			is_alive = #{bean.isAlive,jdbcType=VARCHAR},
+			next_send_time = #{bean.nextSendTime,jdbcType=VARCHAR},
+			start_time = #{bean.startTime,jdbcType=VARCHAR},
+			update_time = #{bean.updateTime,jdbcType=VARCHAR}
+			where alarm_code = #{bean.alarmCode,jdbcType=VARCHAR}
+		</foreach>
+	</update>
+	
+	
+	
+	
+	"httpMethod":"GET",
+	 "urlPath":"/",
+	
+	
+	
+	JSONObject jsonObject = JSONObject.fromObject(jsonStr);
+	
+asdfjolwenfcds12432  
+	
