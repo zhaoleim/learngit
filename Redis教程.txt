@@ -1,0 +1,139 @@
+
+Redis教程;
+	
+	一、安装Redis
+	
+	*安装C环境、因为redis是由C语言编写的，它的运行需要C环境，因此我们需要先安装gcc
+	
+	执行:  yum install gcc-c++
+	
+	
+	1、创建redis目录
+	
+	mkdir -p /usr/local/redis
+	
+	2、下载redis的tar包
+	
+	wget http://download.redis.io/releases/redis-4.0.8.tar.gz
+	
+	3、解压
+	
+	tar xzvf redis-4.0.8.tar.gz
+	
+	4、安装
+	
+	* cd redis-4.0.8  //进入解压目录
+	
+	* make   //对解压后的文件进行编译 (若执行报错、则执行 make MALLOC=libc)
+	
+	* cd src  //进入src目录
+	
+	* make install PREFIX=/usr/local/redis  //安装redis 
+	
+	5、移动配置文件到安装目录下
+	
+		* cd ../
+		
+		* mkdir /usr/local/redis/etc
+		
+		* mv redis.conf /usr/local/redis/etc 
+	
+	6、配置 redis为后台启动
+	
+		* vi /usr/local/redis/etc/redis.conf
+		
+		* 将 daemonize no 改成daemonize yes
+		
+	7、将redis加入到开机启动
+	
+		* 执行: vi /etc/rc.local
+		
+		* 添加 /usr/local/redis/bin/redis-server /usr/local/redis/etc/redis.conf
+	  
+	8、开启redis 
+		
+		* /usr/local/redis/bin/redis-server /usr/local/redis/etc/redis.conf 
+	  
+	9、将redis-cli、redis-server拷贝到bin下、让redis-cli指令可以在任意目录下直接使用
+	
+		* cp /usr/local/redis/bin/redis-server /usr/local/bin/
+		
+		* cp /usr/local/redis/bin/redis-cli /usr/local/bin/
+		
+	10、设置redis密码
+	
+		* 运行名称: redis-cli 
+		
+		* 查看现有的redis密码 运行: config get requirepass 
+		
+		* 设置redis密码
+			
+			运行命令: config set requirepass *** (***为要设置的密码)、设置成功会返回'OK'。
+		
+		* 测试连接
+			
+			重新输入 redis-cli 、使用 auth '***' (***为设置的密码) 登录
+			
+	11、外网访问redis
+		
+	*
+		1、配置防火墙: firewall-cmd --zone=public --add-port=6379/tcp --permanent (开放端口)
+		
+		2、重启防火墙使得配置生效 systemctl restart firewalld
+		
+		3、查看系统所有的开发端口: firewall-cmd --zone=public --list-ports
+		
+	*
+		1、虽然已经开放了6379端口、但是外网还是无法访问。因为redis监听的是127.0.0.1:6379、
+		并不监听外网的请求:
+			
+		(1)把文件夹目录里的redis.conf配置文件里的bind 127.0.0.1前面加#注释掉
+		
+		(2)命令: redis-cli连接到redis后、通过config get daemonize和config get protected-mode 是不是都是no、
+		如果不是、就用config set配置名、属性改为no
+		
+=================================================================================================================
+
+	常用命令:
+		
+		redis-server /usr/local/redis/etc/redis.conf
+		
+		pkill redis //停止 redis 
+		
+		
+		
+		
+		卸载redis:
+			
+		rm -rf /usr/local/redis  //删除安装目录
+		
+		rm -rf /usr/bin/redis-*  //删除所有的redis相关命令脚本
+		
+		rm -rf /root/download/redis-4.0.4  //删除redis解压文件夹
+		
+		
+	*启动redis
+		
+		redis-server  或者
+		
+		redis-server &  (加上'&'使得redis以后台方式运行)
+		
+	*关闭redis
+		
+		redis-cli shutdown
+		
+	*检测后台进程是否存在
+	
+		ps -ef|grep redis 
+		
+	*检测6379端口是否在监听
+	
+		netstat -lntp|grep 6379
+		
+		
+
+	
+	
+	
+	
+	
