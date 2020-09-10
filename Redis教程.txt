@@ -93,10 +93,20 @@ Redis教程;
 		如果不是、就用config set配置名、属性改为no
 		
 =================================================================================================================
+	
+	redis特征:
+	
+	1、数据之间没有必然的联系
+	
+	2、内部采用单线程机制工作
+	
+	3、性能高、支持每秒十几万次的读写操作
+	
+	4、多数据类型支持:字符串类型(string)、列表类型(list)、散列类型(hash)、集合类型(set)、有序集合类型(sorted_set)
 
 	常用命令:
 		
-		redis-server /usr/local/redis/etc/redis.conf
+		redis-server /usr/local/redis/etc/redis.conf  //启动redis
 		
 		pkill redis //停止 redis 
 		
@@ -130,8 +140,78 @@ Redis教程;
 	
 		netstat -lntp|grep 6379
 		
+	*远程登录redis
+		
+		redis-cli -h 192.168.40.134  -p  6379 
+		
+=================================================================================================================
+
+	
+二、Redis中管理数据库和Key。
+	
+	1、管理数据库、开箱即用的Redis实例、支持16个逻辑数据库，这些数据库是相互隔离的、当你在一个数据库中运行命令时、
+	它不会影响Redis实例中其他数据库中存储的任何数据。
+	
+	Redis数据库从编号1到15、默认情况下。0当你连接到Redis实例时、你将连接到数据库。但是、可以在select在连接后通过以下命令更改正在使用的数据库:
+	
+	select 15  //切换到15数据库
+	
+	如果你选择了0以外的数据库。则会在redis-cli提示中反应出来 (eg: 127.0.0.1:6379[15])
+	
+	2、将一个数据库中保存的所有数据与另一个数据库中保存的数据交换、请使用swapdb命令
+	例如:将数据库6个数据库8中的数据交换。
+	
+
+
+三、redis数据类型操作
+	
+	1、string类型
+		
+		*	添加/修改数据   set key value
+		
+		*	获取数据(若为空、则返回nil)  get key
+		
+		*	删除数据(返回1代表成功、0代表失败)  del key
+		
+		*	添加多个数据 mset key1 value1 key2 value2
+		
+		*	获取多个数据 mget key1 key2 
+		
+		*	获取字符串的长度 strlen key 
+		
+		*	追加信息到原始信息之后  append key value 
+		
+		*	设置数据具有指定的声明周期  setex key seconds value 
+			
+			psetex key milliseconds value 
+			
+	2、hash类型
+		
+		hash类型主要用于在一个存储空间内保存多个键值对信息
+		
+		*	添加/修改数据   hset key field value 
+		
+		*	获取数据			hget key field       
+		* 	获取key的所有值 	hgetall key
+		
+		*	删除数据		hdel	key field 
+		
+		*	添加/修改多个数据	
+			
+			hmset key field1 value1 field2 value2...
+			
+		*	获取多个数据	
+			
+			hmget key field1 field2  
+			
+		*	获取哈希表中字段的数量 hlen key  
+			
+		
+		
 		
 
+	
+	
 	
 	
 	
